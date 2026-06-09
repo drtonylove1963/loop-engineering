@@ -30,8 +30,9 @@ build/
 !tools/loop-audit/dist/
 *.egg-info/
 
-# State files that should not be committed in examples
+# State files that should not be committed in consumer projects (reference repo dogfoods STATE.md)
 STATE.md
+!STATE.md
 state.json
 *.state
 
@@ -40,5 +41,9 @@ state.json
 !starters/**/.grok/
 !starters/**/.grok/**
 .claude/
+!starters/**/.claude/
+!starters/**/.claude/**
 .codex/
+!starters/**/.codex/
+!starters/**/.codex/**
 *.session

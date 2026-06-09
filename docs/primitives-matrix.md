@@ -61,3 +61,13 @@ You do not need to pick one forever. A well-designed loop transfers:
 4. Map scheduling to your current TUI or Action
 
 See [examples/](../examples/) for the same pattern implemented across tools.
+
+## Copy-paste starters (Daily Triage, L1)
+
+| Tool | Starter |
+|------|---------|
+| Grok | [starters/minimal-loop](../starters/minimal-loop/) |
+| Claude Code | [starters/minimal-loop-claude](../starters/minimal-loop-claude/) |
+| Codex | [starters/minimal-loop-codex](../starters/minimal-loop-codex/) |
+
+Audit after copying: `npx @cobusgreyling/loop-audit . --suggest`

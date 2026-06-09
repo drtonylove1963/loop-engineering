@@ -33,8 +33,8 @@ A loop is a recursive goal: you define a purpose and the AI iterates (often with
 | [Primitives Matrix](docs/primitives-matrix.md) | Grok vs Claude Code vs Codex — **bookmark this** |
 | [Loop Design Checklist](docs/loop-design-checklist.md) | Ship readiness rubric |
 | [Patterns](patterns/README.md) | PR babysitter, daily triage, CI sweeper, post-merge |
-| [Starters](starters/minimal-loop/) | Clone-and-run kits |
-| [loop-audit](tools/loop-audit/) | Loop Readiness Score CLI |
+| [Starters](starters/) | Clone-and-run kits (Grok, Claude Code, Codex) |
+| [loop-audit](tools/loop-audit/) | Loop Readiness Score CLI — `npx @cobusgreyling/loop-audit` |
 | [Stories](stories/) | Real wins and honest failures |
 
 ## Why This Matters
@@ -94,15 +94,22 @@ Machine-readable index: [patterns/registry.yaml](patterns/registry.yaml)
 ## Getting Started (5 minutes)
 
 ```bash
-# 1. Clone this repo or copy a starter into your project
+# 1. Pick a starter for your tool
+# Grok:
 cp -r starters/minimal-loop/.grok/skills/loop-triage .grok/skills/
+# Claude Code:
+cp -r starters/minimal-loop-claude/.claude/skills/loop-triage .claude/skills/
+# Codex:
+cp -r starters/minimal-loop-codex/.codex/skills/loop-triage .codex/skills/
 cp starters/minimal-loop/STATE.md.example STATE.md
 
-# 2. Audit readiness
-cd tools/loop-audit && npm install && npm run build
-node dist/cli.js /path/to/your/project
+# 2. Audit readiness (no clone required)
+npx @cobusgreyling/loop-audit . --suggest
 
-# 3. Start report-only (Grok)
+# 3. See scores climb: empty → L1 → L2
+bash scripts/before-after-demo.sh
+
+# 4. Start report-only (Grok example)
 /loop 1d Run loop-triage. Update STATE.md. No auto-fix in week one.
 ```
 

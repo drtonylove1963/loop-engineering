@@ -29,8 +29,13 @@ Clone this into your project root to run a **report-only daily triage loop** (L1
 | `.grok/skills/loop-triage/SKILL.md` | Triage skill |
 | `LOOP.md` | Loop config doc for your team |
 
+## Other tools
+
+- Claude Code: [minimal-loop-claude](../minimal-loop-claude/)
+- Codex: [minimal-loop-codex](../minimal-loop-codex/)
+
 ## Next Steps
 
 - [Loop Design Checklist](../../docs/loop-design-checklist.md)
 - [Daily Triage pattern](../../patterns/daily-triage.md)
-- Run `node tools/loop-audit/dist/cli.js .` for readiness score
+- Run `npx @cobusgreyling/loop-audit .` for readiness score

@@ -26,7 +26,8 @@ Exit codes:
 Examples:
   loop-audit .
   loop-audit starters/minimal-loop --suggest
-  node tools/loop-audit/dist/cli.js . --json
+  npx @cobusgreyling/loop-audit . --json
+  bash scripts/before-after-demo.sh
 `);
     process.exit(0);
 }
@@ -42,12 +43,20 @@ try {
         console.log('\n=== Suggested actions (copy & customize) ===');
         console.log('From the root of this repo (or after cloning the reference):');
         console.log('');
-        console.log('  # Minimal L1 daily triage');
+        console.log('  # Minimal L1 daily triage — pick your tool');
+        console.log('  # Grok:');
         console.log('  cp -r starters/minimal-loop/.grok/skills/loop-triage .grok/skills/');
-        console.log('  cp starters/minimal-loop/STATE.md.example STATE.md');
+        console.log('  # Claude Code:');
+        console.log('  cp -r starters/minimal-loop-claude/.claude/skills/loop-triage .claude/skills/');
+        console.log('  cp starters/minimal-loop-claude/.claude/agents/loop-verifier.md .claude/agents/');
+        console.log('  # Codex:');
+        console.log('  cp -r starters/minimal-loop-codex/.codex/skills/loop-triage .codex/skills/');
+        console.log('  cp starters/minimal-loop-codex/.codex/agents/verifier.toml .codex/agents/');
+        console.log('  # All tools:');
+        console.log('  cp starters/minimal-loop/STATE.md.example STATE.md   # or -claude / -codex variant');
         console.log('  cp starters/minimal-loop/LOOP.md .');
         console.log('');
-        console.log('  # Maker/checker verifier');
+        console.log('  # Maker/checker verifier (Grok / generic skills dir)');
         console.log('  mkdir -p .grok/skills/loop-verifier');
         console.log('  cp templates/SKILL.md.verifier .grok/skills/loop-verifier/SKILL.md');
         console.log('');

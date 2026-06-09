@@ -30,11 +30,23 @@ The goal of this repo is to be the canonical, copyable, high-signal collection o
 - The `validate-patterns.yml` + `audit.yml` workflows in `.github/workflows/` are the beginning of dogfooding these patterns.
 - Future: a sweeper that reacts to failing validate/audit runs with minimal doc or link fixes.
 
+## Worktrees
+
+- Any unattended code-change experiment (dependency sweeper, PR babysitter fixes) runs in an **isolated git worktree** per attempt.
+- One worktree per fix; discard after verifier REJECT or human escalation.
+- Starters document worktree usage per tool — see `starters/minimal-loop-claude/LOOP.md` and `starters/minimal-loop-codex/LOOP.md`.
+
+## Connectors (MCP)
+
+- **MCP not required** for L1 daily triage on this reference repo.
+- Optional: GitHub MCP for issue/PR discovery when moving to L2 PR babysitter.
+- Scope connectors to read + comment until the loop is trusted.
+
 ## Safety & Gates (this repo)
 
 - No auto-merge on main for anything except the most trivial dependency patches (and even those are behind allowlist + verifier today).
 - Denylist for this reference: anything touching the showcase HTML/CSS, the core primitives docs, or the audit scoring logic without human review.
-- All state that would be "live" lives in `.example` files or is maintained by the workflows (never committed live STATE).
+- Live loop state: `STATE.md` at repo root (dogfooded). Starters still ship `.example` files for consumers.
 
 ## How to run the loops here (for contributors / the maintainer)
 

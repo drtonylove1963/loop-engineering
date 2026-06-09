@@ -4,6 +4,15 @@ CLI that scores a project's **Loop Readiness** (0–100) and suggests next steps
 
 ## Install & Run
 
+**npm (recommended):**
+
+```bash
+npx @cobusgreyling/loop-audit .
+npx @cobusgreyling/loop-audit . --suggest
+```
+
+**From this repo:**
+
 ```bash
 cd tools/loop-audit
 npm install
@@ -11,10 +20,12 @@ npm run build
 node dist/cli.js /path/to/your/project
 ```
 
-Or from repo root after build:
+## Before/after demo
+
+See scores climb from empty → L1 starter → L2 verifier:
 
 ```bash
-node tools/loop-audit/dist/cli.js starters/minimal-loop
+bash scripts/before-after-demo.sh
 ```
 
 ## Options
@@ -23,20 +34,28 @@ node tools/loop-audit/dist/cli.js starters/minimal-loop
 loop-audit .              # human-readable (default)
 loop-audit . --json       # machine-readable
 loop-audit . --md         # markdown report
-loop-audit . --suggest    # show copy-from-template commands for what's missing (highly recommended)
+loop-audit . --suggest    # copy-from-template commands (all tools)
 ```
 
 Exit code `2` if score < 40 (useful for CI gates once your project is loop-ready).
 
-The reference repo itself now ships `.github/workflows/audit.yml` that runs this on the starters + root on every PR/push.
+## Publish to npm
 
-## Signals Checked (v1.1+)
+Maintainers:
+
+```bash
+cd tools/loop-audit
+npm run build
+npm publish --access public
+```
+
+## Signals Checked (v1.2+)
 
 | Signal                  | Notes |
 |-------------------------|-------|
 | State file              | STATE.md or pattern-specific |
 | Triage skill            | loop-triage / ci-triage / pr-review-triage etc. |
-| Verifier skill          | maker/checker split |
+| Verifier skill          | maker/checker split (skills or Claude/Codex agents) |
 | LOOP.md / config        | Cadence, limits, handoff |
 | AGENTS.md / CLAUDE.md   | Project conventions |
 | Safety docs             | safety.md + LOOP.md mentions of gates |
@@ -44,8 +63,6 @@ The reference repo itself now ships `.github/workflows/audit.yml` that runs this
 | MCP / connectors        | Mentions or config files |
 | Worktree evidence       | Isolation patterns in docs |
 | patterns/registry.yaml  | Machine index for tooling |
-
-Weights favor state + triage + verifier + safety + .github dogfooding.
 
 ## Levels
 

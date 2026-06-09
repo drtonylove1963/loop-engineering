@@ -10,3 +10,11 @@ Same patterns, different tools. Skills and state schemas are shared; only schedu
 | GitHub Actions | [github-actions/](./github-actions/) |
 
 Start with [primitives-matrix.md](../docs/primitives-matrix.md) to map capabilities.
+
+**Copy-paste starters** (L1 daily triage):
+
+| Tool | Starter |
+|------|---------|
+| Grok | [starters/minimal-loop](../starters/minimal-loop/) |
+| Claude Code | [starters/minimal-loop-claude](../starters/minimal-loop-claude/) |
+| Codex | [starters/minimal-loop-codex](../starters/minimal-loop-codex/) |

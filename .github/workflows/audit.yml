@@ -44,11 +44,9 @@ jobs:
             try {
               const data = JSON.parse(fs.readFileSync("/tmp/audit.json", "utf8"));
               console.log("Reference score: " + data.score);
-              // The reference repo is the *source* of starters/skills, not a running project.
-              // It will naturally score lower until we decide to dogfood a .grok/ or STATE at root.
-              // Keep a low bar here; the value is that the audit *runs* and surfaces findings.
-              if (data.score < 25) {
-                console.error("Reference score critically low. Consider adding LOOP.md state signals or .github improvements.");
+              // Reference repo dogfoods L2: STATE.md, skills/, AGENTS.md, LOOP.md gates.
+              if (data.score < 58) {
+                console.error("Reference score below L2 threshold (58). Restore dogfood signals: STATE.md, skills/, AGENTS.md.");
                 process.exit(2);
               }
             } catch (e) {

@@ -78,6 +78,24 @@ async function findSkills(root: string): Promise<string[]> {
       if (e.isFile() && e.name === 'SKILL.md') found.push('root-skill');
     }
   }
+
+  // Claude Code agents and Codex subagents can host the verifier role
+  const agentDirs = [
+    path.join(root, '.claude', 'agents'),
+    path.join(root, '.codex', 'agents'),
+  ];
+  for (const dir of agentDirs) {
+    if (!(await fileExists(dir))) continue;
+    const entries = await readdir(dir, { withFileTypes: true });
+    for (const e of entries) {
+      if (!e.isFile()) continue;
+      const base = e.name.replace(/\.(md|toml)$/i, '');
+      if (base.includes('verifier') || base === 'loop-verifier') {
+        found.push('loop-verifier');
+      }
+    }
+  }
+
   return found;
 }
 
@@ -159,7 +177,14 @@ export async function auditProject(target: string): Promise<AuditResult> {
 
   // Light evidence of worktree usage (common in patterns/starters/LOOP)
   let worktreeEvidence = false;
-  const candidateMd = ['LOOP.md', 'patterns/pr-babysitter.md', 'starters/minimal-loop/LOOP.md', 'docs/operating-loops.md'];
+  const candidateMd = [
+    'LOOP.md',
+    'patterns/pr-babysitter.md',
+    'starters/minimal-loop/LOOP.md',
+    'starters/minimal-loop-claude/LOOP.md',
+    'starters/minimal-loop-codex/LOOP.md',
+    'docs/operating-loops.md',
+  ];
   for (const c of candidateMd) {
     try {
       const p = path.join(root, c);
@@ -190,21 +215,21 @@ export async function auditProject(target: string): Promise<AuditResult> {
 
   if (!signals.stateFile.present) {
     findings.push({ level: 'fail', message: 'No state file (STATE.md or pattern-specific state).' });
-    recommendations.push('Copy starters/minimal-loop/STATE.md.example to STATE.md');
+    recommendations.push('Copy starters/minimal-loop/STATE.md.example (or -claude / -codex variant) to STATE.md');
   } else {
     findings.push({ level: 'ok', message: `State file(s): ${statePaths.join(', ')}` });
   }
 
   if (!signals.triage.present) {
     findings.push({ level: 'warn', message: 'No triage skill detected.' });
-    recommendations.push('Install loop-triage from templates/ or starters/minimal-loop/');
+    recommendations.push('Install loop-triage from starters/minimal-loop, minimal-loop-claude, or minimal-loop-codex');
   } else {
     findings.push({ level: 'ok', message: 'Triage skill present.' });
   }
 
   if (!signals.verifier.present) {
     findings.push({ level: 'warn', message: 'No loop-verifier skill — maker/checker split incomplete.' });
-    recommendations.push('Add templates/SKILL.md.verifier as .grok/skills/loop-verifier/SKILL.md');
+    recommendations.push('Add verifier: .grok/skills/loop-verifier, .claude/agents/loop-verifier.md, or .codex/agents/verifier.toml');
   } else {
     findings.push({ level: 'ok', message: 'Verifier skill present.' });
   }
