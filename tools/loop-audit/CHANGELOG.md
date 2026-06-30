@@ -2,6 +2,12 @@
 
 All notable changes to `@cobusgreyling/loop-audit` are documented here.
 
+## [1.5.0] - 2026-06-30
+
+### Added
+- `loop-constraints.md` and `loop-constraints` skill detection in readiness scoring (+6 points when both present)
+- Recommendations when constraints file or skill is missing
+
 ## [1.4.1] - 2026-06-13
 
 ### Changed
