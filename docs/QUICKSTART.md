@@ -156,10 +156,32 @@ Commit the scaffold + first run update so `loop-audit` sees activity on the next
 | When | Do this |
 |------|---------|
 | End of week one | Re-run `loop-audit . --suggest` — aim for L1 (score ~40+) |
-| Week two | Add a verifier skill; try one assisted fix in a worktree (L2) |
+| Week two | Add a verifier skill; try one assisted fix in a worktree (L2) — see [loop-worktree](#l2-isolated-fix-attempts-loop-worktree) below |
 | Before unattended (L3) | `loop-budget.md` + `loop-run-log.md` filled, human gates in `LOOP.md`, proven runs |
 | Unsure which pattern | [pattern-picker.md](./pattern-picker.md) · [loop-design-checklist.md](./loop-design-checklist.md) |
 | Something broke | [failure-modes.md](./failure-modes.md) · [stories/](../stories/) |
+
+### L2: isolated fix attempts (`loop-worktree`)
+
+PR Babysitter and CI Sweeper need **one git worktree per fix attempt** so retries don't collide on the same branch. `loop-worktree` tracks them in a manifest and sweeps rejected attempts.
+
+```bash
+# Create an isolated worktree for one fix attempt
+npx @cobusgreyling/loop-worktree create --run-id pr-217-fix-1 --pattern pr-babysitter
+
+# Run your fix in the worktree path printed by create, then verifier...
+
+# Verifier rejected — mark for cleanup (audit trail only)
+npx @cobusgreyling/loop-worktree mark --run-id pr-217-fix-1 --status rejected
+
+# Sweep rejected/escalated worktrees older than 24h
+npx @cobusgreyling/loop-worktree cleanup --older-than 24h
+
+# List active worktrees
+npx @cobusgreyling/loop-worktree list
+```
+
+Pair with the [circuit breaker](#circuit-breaker-for-l2-loops-optional) above: when `loop-context --check` exits `2`, mark the worktree `escalated` before handing off to a human. The two tools stay independent — see [tools/loop-worktree/README.md](../tools/loop-worktree/README.md).
 
 ## Copy-paste cheat sheet
 
@@ -182,6 +204,11 @@ npx @cobusgreyling/loop-audit . --badge
 
 # Optional MCP runtime lookup (patterns, skills, state on demand)
 LOOP_PROJECT_ROOT=. npx @cobusgreyling/loop-mcp-server
+
+# L2: isolated worktree per fix attempt (PR Babysitter, CI Sweeper)
+npx @cobusgreyling/loop-worktree create --run-id <id> --pattern <pattern>
+npx @cobusgreyling/loop-worktree mark --run-id <id> --status rejected
+npx @cobusgreyling/loop-worktree cleanup --older-than 24h
 ```
 
 ## Learn the why (optional, 10 minutes)
